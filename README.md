@@ -108,3 +108,43 @@ Important notes:
 - Alpamayo-R1 is not a fully fledged driving stack. Among other limitations, it lacks access to critical real-world sensor inputs, does not incorporate required diverse and redundant safety mechanisms, and has not undergone automotive-grade validation for deployment.
 
 By using this model, you acknowledge that it is a research tool intended to support scientific inquiry, benchmarking, and exploration—not a substitute for a certified AV stack. The developers and contributors disclaim any responsibility or liability for the use of the model or its outputs.
+
+---
+
+## 🚗 Workzone Integration
+
+### Running with Workzone Apps
+
+A wrapper script (`run_alpamayo.sh`) is provided to run Alpamayo apps with the correct environment:
+
+```bash
+cd /home/cvrr/Code/workzone/alpamayo
+
+# 10Hz inspector (processes video with VLA reasoning overlay)
+./run_alpamayo.sh src/workzone/apps/alpamayo/alpamayo_10hz_inspector.py \
+  --video ../data/demo/your_video.mp4 \
+  --output output.mp4
+
+# Threaded player (zero-lag real-time playback)
+./run_alpamayo.sh src/workzone/apps/alpamayo/alpamayo_threaded.py \
+  --video ../data/demo/your_video.mp4
+```
+
+### Manual Method
+
+```bash
+cd /home/cvrr/Code/workzone/alpamayo
+source ar1_venv/bin/activate
+export PYTHONPATH="/home/cvrr/Code/workzone/src:$PYTHONPATH"
+
+python ../src/workzone/apps/alpamayo/alpamayo_10hz_inspector.py \
+  --video ../data/demo/your_video.mp4 \
+  --output output.mp4
+```
+
+### Troubleshooting
+
+**"ModuleNotFoundError: No module named 'workzone'"**  
+Use the wrapper script or set: `export PYTHONPATH="/home/cvrr/Code/workzone/src:$PYTHONPATH"`
+
+**Note**: These apps are **optional** and resource-intensive. For better performance, use the main Streamlit app (`app_semantic_fusion.py`) with lightweight fusion instead of heavy VLM inference.
